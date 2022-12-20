@@ -28,7 +28,7 @@ public class AdminsController {
     public String showUsersList(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("usersList", userService.findAllUsers());
         model.addAttribute("userDetails", userDetails);
-        model.addAttribute("roles", userDetails.getAuthorities());
+        model.addAttribute("roles", roleService.findAll());
         return "admin";
     }
 
@@ -45,6 +45,7 @@ public class AdminsController {
         if (result.hasErrors()) {
             return "redirect:/new";
         }
+        roleService.setUserRoles(user);
         userService.saveUser(user);
         return "redirect:/admin";
     }
