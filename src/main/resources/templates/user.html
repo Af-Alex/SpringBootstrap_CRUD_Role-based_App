@@ -15,10 +15,10 @@
 <nav class="navbar navbar-dark bg-dark text-white">
     <div class="container-fluid">
         <a class="navbar-brand">
-            <b><span class="align-middle" th:text="${userDetails.username}"></span></b>
+            <b><span class="align-middle" th:text="${currentUser.username}"></span></b>
             <span class="align-middle">with roles:</span>
-            <th:block th:each="auth : ${userDetails.authorities}">
-                <b><span class="align-middle" th:text="${auth.authority}"></span></b>
+            <th:block th:each="role : ${currentUser.roles}">
+                <b><span class="align-middle" th:text="${role.authority}"></span></b>
             </th:block>
         </a>
         <form class="d-flex" action="/logout" method="post">
@@ -30,10 +30,14 @@
     <div class="row row-cols-2 text-black">
         <div class="col-2 bg-white">
             <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link" href="/admin" sec:authorize="hasAuthority('ADMIN')" role="tab"
-                   aria-controls="v-pills-home" aria-selected="true">Admin</a>
-                <a class="nav-link active" href="/user" sec:authorize="(hasAnyAuthority('ADMIN', 'USER'))" role="tab"
-                   aria-controls="v-pills-profile" aria-selected="false">User</a>
+                <div >
+                    <a class="nav-link" href="/admin" sec:authorize="hasAuthority('ADMIN')" th:text="Admin" role="tab"
+                        aria-controls="v-pills-home" aria-selected="true"></a>
+                </div>
+                <div>
+                    <a class="nav-link active" href="/user" sec:authorize="hasAnyAuthority('ADMIN', 'USER')" role="tab"
+                        aria-controls="v-pills-profile" aria-selected="false">User</a>
+                </div>
             </div>
         </div>
         <div class="col-10">
@@ -59,13 +63,13 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td th:text="${user.id}"></td>
-                                <td th:text="${user.firstName}"></td>
-                                <td th:text="${user.lastName}"></td>
-                                <td th:text="${user.age}"></td>
-                                <td th:text="${user.username}"></td>
+                                <td th:text="${currentUser.id}"></td>
+                                <td th:text="${currentUser.firstName}"></td>
+                                <td th:text="${currentUser.lastName}"></td>
+                                <td th:text="${currentUser.age}"></td>
+                                <td th:text="${currentUser.username}"></td>
                                 <td>
-                                    <th:block th:each="role : ${user.roles}">
+                                    <th:block th:each="role : ${currentUser.roles}">
                                         <span class="align-middle" th:text="${role.authority}"></span>
                                     </th:block>
                                 </td>

@@ -12,7 +12,6 @@
           crossorigin="anonymous"/>
 </head>
 <body>
-
 <!--Header-->
 <nav class="navbar navbar-dark bg-dark text-white">
     <div class="container-fluid">
@@ -28,11 +27,9 @@
         </form>
     </div>
 </nav>
-
 <!--Page container-->
 <div class="container-fluid">
     <div class="row row-cols-2 text-black">
-
         <!--Right navigation bar-->
         <div class="col-2 bg-white">
             <div class="nav flex-column nav-pills pt-4" role="tablist" aria-orientation="vertical">
@@ -79,8 +76,8 @@
                                     <td th:text="${user.age}"></td>
                                     <td th:text="${user.username}"></td>
                                     <td>
-                                        <th:block th:each="role : ${user.roles}">
-                                            <span class="align-middle" th:text="${role.authority}"></span>
+                                        <th:block th:each="userRole : ${user.getAuthorities()}">
+                                            <span class="align-middle" th:text="${userRole.authority}"></span>
                                         </th:block>
                                     </td>
                                     <td>
@@ -96,7 +93,6 @@
                                             Delete
                                         </button>
                                     </td>
-
                                     <!--Modal-edit dialog-->
                                     <div aria-hidden="true" aria-labelledby="editModalLabel" id="editModal"
                                          tabindex="-1" class="modal fade" th:id="${'editModal'+user.id}">

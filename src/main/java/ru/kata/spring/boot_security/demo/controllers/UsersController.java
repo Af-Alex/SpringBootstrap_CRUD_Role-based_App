@@ -21,13 +21,13 @@ public class UsersController {
     }
 
     @GetMapping("login")
-    public String login() {
+    public String loginPage() {
         return "login";
     }
 
     @GetMapping("user")
-    public String getCurrentUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        model.addAttribute("user", userService.findByUsername(userDetails.getUsername()));
+    public String showUser(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("currentUser", userService.findByUsername(userDetails.getUsername()));
         model.addAttribute("userDetails", userDetails);
         return "user";
     }
