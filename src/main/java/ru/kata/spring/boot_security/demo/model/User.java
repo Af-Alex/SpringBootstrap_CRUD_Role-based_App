@@ -4,7 +4,6 @@ package ru.kata.spring.boot_security.demo.model;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -12,7 +11,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -52,6 +50,12 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String username, String password, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.roles = roles;
@@ -117,7 +121,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
+        return roles;
     }
 
     @Override
@@ -138,6 +142,16 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean hasRole(String roleName) {
+        if (roles.stream()
+                .map(r -> r.getName())
+                .filter(r -> r.equals(roleName))
+                .findAny().isPresent()) {
+            return true;
+        }
+        return false;
     }
 
     @Override

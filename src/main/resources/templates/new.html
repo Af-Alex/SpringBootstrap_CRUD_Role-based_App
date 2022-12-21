@@ -12,31 +12,31 @@
           crossorigin="anonymous"/>
 </head>
 <body>
-
 <!--Header-->
-<header class="navbar navbar-dark bg-dark text-white">
+<nav class="navbar align-top text-white navbar-expand-xl navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand">
-            <b><span class="align-middle" th:text="${userDetails.username}"></span></b>
+        <a class="navbar-brand"> <b><span class="align-middle" th:text="${admin.username}"></span></b>
             <span class="align-middle">with roles:</span>
-            <th:block th:each="auth : ${userDetails.authorities}">
-                <b><span class="align-middle" th:text="${auth.authority}"></span></b>
+            <th:block th:each="role : ${admin.roles}">
+                <b><span class="align-middle" th:text="${role.authority}"></span></b>
             </th:block>
         </a>
-        <form class="d-flex" action="/logout" method="post">
-            <button type="submit" class="btn btn-dark text-secondary"><b>Logout</b></button>
-        </form>
+        <div class="text-right">
+            <form class="d-flex" action="/logout" method="post">
+                <button class="btn btn-dark text-secondary" type="submit"><strong>Logout</strong></button>
+            </form>
+        </div>
     </div>
-</header>
-
+</nav>
 <div class="container-fluid">
     <div class="row row-cols-2 text-black">
-        <div class="col-2 bg-white">
+        <!--Right navigation bar-->
+        <div class="col-sm-2 bg-white">
             <div class="nav flex-column nav-pills pt-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" href="/admin" sec:authorize="hasAuthority('ADMIN')" role="tab"
-                   aria-controls="v-pills-home" aria-selected="true">Admin</a>
-                <a class="nav-link" href="/user" sec:authorize="(hasAnyAuthority('ADMIN','USER'))" role="tab"
-                   aria-controls="v-pills-profile" aria-selected="false">User</a>
+                <a class="nav-link active" href="/admin" sec:authorize="hasRole('ADMIN')" role="tab"
+                   aria-controls="v-pills-home" aria-selected="true" th:if="${admin.hasRole('ADMIN')}">Admin</a>
+                <a class="nav-link" href="/user" sec:authorize="hasAnyRole('ADMIN', 'USER')" role="tab"
+                   aria-controls="v-pills-profile" aria-selected="false" th:if="${admin.hasRole('USER')}">User</a>
             </div>
         </div>
         <div class="col-10">
