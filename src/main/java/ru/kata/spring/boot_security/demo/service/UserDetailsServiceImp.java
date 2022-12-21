@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 
-@Service("userDetailsService")
+@Service("myUserDetailsService")
 public class UserDetailsServiceImp implements UserDetailsService {
 
     private UserService userService;
@@ -24,9 +24,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
-        return new org.springframework.security.core.userdetails
-                .User(user.getUsername(), user.getPassword(), user.getAuthorities());
+        return new User(user.getUsername(), user.getPassword(), user.getRoles());
     }
-
-
 }

@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,6 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 @RequestMapping( "/admin")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminsController {
 
     private final UserService userService;
@@ -28,6 +26,7 @@ public class AdminsController {
     public String showUsersList(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("usersList", userService.findAllUsers());
         model.addAttribute("userDetails", userDetails);
+        model.addAttribute("admin", userService.findByUsername(userDetails.getUsername()));
         model.addAttribute("roles", roleService.findAll());
         return "admin";
     }
@@ -35,6 +34,7 @@ public class AdminsController {
     @GetMapping("/new")
     public String showNewUserForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("userDetails", userDetails);
+        model.addAttribute("admin", userService.findByUsername(userDetails.getUsername()));
         model.addAttribute("roles", roleService.findAll());
         model.addAttribute("user", new User());
         return "/new";
